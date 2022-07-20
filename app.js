@@ -92,7 +92,7 @@ app.post("/failure", function(req, res){
 
 
 
-// server is listening on two ports i.e. process.env.PORT (heroku) & 5000 (local)
+// server is listening on two ports i.e. process.env.PORT (heroku) & 5000.
 app.listen(process.env.PORT || 5000, function(){    
     console.log("Server is running on port 5000.");
 });
