@@ -1,3 +1,4 @@
+const personals = require(__dirname + "/personals.js");
 const express = require("express");         // importing all the required packages.
 const bodyParser = require("body-parser");
 const request = require("request");
@@ -16,7 +17,7 @@ app.use(bodyParser.urlencoded({extended: true}));   // this u   rlencoded() is u
 
 
 // whenever clients make request to home route (at port: process.env.PORT || 5000), then send signup.html to them.
-app.get("/", function(req, res){        
+app.get("/", function(req, res){      
     res.sendFile(__dirname + "/signup.html");
 });
 
@@ -50,10 +51,10 @@ app.post("/", function(req, res){
 
     // https.request() has three parameters: url, options and callback function
 
-    const url = "https://us10.api.mailchimp.com/3.0/lists/7b74b9ff8e";      // 1st parameter
+    const url = "https://"+personals.mailchimpServerID+".api.mailchimp.com/3.0/lists/"+personals.audienceID;      // 1st parameter
     const options = {                                                       // 2nd parameter
         method: "POST",
-        auth: "hello1:acbca36fe044caedeb3dd30d3455fa59-us10"
+        auth: "hello1:"+personals.apikey
     }
 
                                                 // 3rd paramter
@@ -66,9 +67,9 @@ app.post("/", function(req, res){
             res.sendFile(__dirname + "/failure.html");
         }
 
-        response.on("data", function(data){
-            console.log(JSON.parse(data));
-        })
+        // response.on("data", function(data){
+        //     console.log(JSON.parse(data));
+        // })
     });
 
     // below code represents the way we send our data to mailchimp server i.e. by storing output of 
@@ -91,20 +92,7 @@ app.post("/failure", function(req, res){
 
 
 
-// our server is listening on two ports i.e. process.env.PORT & 5000
-// use port 5000 unless there exists a preconfigured port ( like in case of heroku) 
+// server is listening on two ports i.e. process.env.PORT (heroku) & 5000 (local)
 app.listen(process.env.PORT || 5000, function(){    
     console.log("Server is running on port 5000.");
 });
-
-
-
-
-
-
-// api key
-// acbca36fe044caedeb3dd30d3455fa59-us10
-
-
-// audience id
-// 7b74b9ff8e
